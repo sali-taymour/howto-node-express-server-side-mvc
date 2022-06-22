@@ -4,10 +4,10 @@ import { siteData } from './src/models.js';
 import cors from 'cors';
 dotenv.config();
 const baseUrl = process.env.BASE_URL;
-
+const mode = process.env.MODE;
 const app = express();
-const port = process.env.PORT || 3007;
-const fullUrl = `${baseUrl}${port}`;
+const port = process.env.PORT;
+const fullUrl = mode === 'development' ? `${baseUrl}:${port}` : baseUrl;
 app.use(express.static('public'));
 //hier sagen wir welche front end darf auf unsere backend kommen (cors)
 app.use(cors());
