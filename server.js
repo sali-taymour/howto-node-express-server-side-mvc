@@ -1,13 +1,16 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import { siteData } from './src/models.js';
-import cors from 'cors'
+import cors from 'cors';
+dotenv.config();
+const baseUrl = process.env.BASE_URL;
 
 const app = express();
 const port = process.env.PORT || 3007;
-const fullUrl = `http://localhost:${port}`;
+const fullUrl = `${baseUrl}${port}`;
 app.use(express.static('public'));
 //hier sagen wir welche front end darf auf unsere backend kommen (cors)
-app.use (cors());
+app.use(cors());
 app.get('/', (req, res) => {
 	res.send(`
     <!DOCTYPE html>
@@ -44,16 +47,16 @@ app.get('/', (req, res) => {
     `);
 });
 //to display data under urls
-Object.entries(siteData).forEach(entry => {
-    const key= entry[0]
-    const value= entry[1]
-    app.get(`/${key}`,(req, res) => {
-        res.send(value);
-    })
-})
+Object.entries(siteData).forEach((entry) => {
+	const key = entry[0];
+	const value = entry[1];
+	app.get(`/${key}`, (req, res) => {
+		res.send(value);
+	});
+});
 app.get('/all', (req, res) => {
-    res.send(siteData);
-})
+	res.send(siteData);
+});
 app.listen(port, () => {
 	console.log(`Listening at http://localhost:${port}`);
 });
